@@ -1,0 +1,217 @@
+<noscript>{{ 'bundle.reassurances.css' | asset_url | stylesheet_tag }}</noscript>
+
+<script>
+	window.assetsUrl.css.push({"reassurances": "{{ "bundle.reassurances.css" | asset_url }}"});
+	window.assetsUrl.js.push({"reassurances": "{{ "bundle.reassurances.js" | asset_url }}"});
+</script>
+
+{% capture swiper-options %}
+    {
+    "slideInView": 1,
+    "slidesToMove": 1,
+    "loop": {% if section.settings.loop %}true{% else %}false{% endif %},
+    "autoplay": {% if section.settings.autoplay %}true{% else %}false{% endif %},
+    "speed": {{ section.settings.speed }},
+    "grabCursor": false,
+    "effect": "slide",
+    "blockLength": {{ section.blocks.size }},
+    "stackMobile": {{ section.settings.stack_mobile }},
+    "freemode_mobile": {{ section.settings.freemode }}
+    }
+{% endcapture %}
+
+<div class="page-width color-{{ section.settings.color_scheme }}" data-ax-section="reassurances" style="color:{{ section.settings.text_color }};">
+    <reassurances-component>
+        <div class="swiper reassurances-content{% if section.settings.stack_mobile %} stack-mobile{% endif %}" id="Swiper-{{ section.id }}" data-options='{{ swiper-options }}'>
+            <div class="swiper-wrapper">
+                {% for block in section.blocks %}
+                    <div class="swiper-slide reassurance">
+                        {%- render 'icons', icon: block.settings.icon -%}
+                        {% if block.settings.url %}<a href="{{ block.settings.url }}">{% endif %}
+                        {% if block.settings.title != blank %}
+                            <span class="reassurance-title">{{ block.settings.title }}</span>
+                        {% endif %}
+                        {% if block.settings.subheading != blank %}
+                            <span class="reassurance-subheading">{{ block.settings.subheading }}</span>
+                        {% endif %}
+                        {% if block.settings.url %}</a>{% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% if section.settings.buttons %}
+                <div class="swiper-button-next">+</div>
+                <div class="swiper-button-prev">-</div>
+            {% endif %}
+
+            {% if section.settings.pagination %}
+                <div class="swiper-pagination"></div>
+            {% endif %}
+        </div>
+    </reassurances-component>
+</div>
+
+{% schema %}
+{
+    "name": "Reassurances",
+    "tag": "section",
+    "class": "section ax-section reassurances",
+    "max_blocks": 4,
+    "settings": [
+        {
+            "type": "header",
+            "content": "Paramètres globaux"
+        },
+        {
+            "type": "checkbox",
+            "id": "stack_mobile",
+            "label": "Empiler en mobile",
+            "default": false
+        },
+        {
+            "type": "header",
+            "content": "Paramètres du slider mobile"
+        },
+        {
+            "type": "checkbox",
+            "id": "autoplay",
+            "label": "Autoplay",
+            "default": false
+        },
+        {
+            "type": "range",
+            "id": "speed",
+            "label": "Vitesse de transition",
+            "default": 300,
+            "step": 100,
+            "min": 100,
+            "max": 3000
+        },
+        {
+            "type": "checkbox",
+            "id": "loop",
+            "label": "Slider infini",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "buttons",
+            "label": "Afficher les boutons",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "pagination",
+            "label": "Afficher la pagination",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "freemode",
+            "label": "Freemode",
+            "default": false
+        },
+        {
+         "type":"select",
+         "id":"color_scheme",
+         "options":[
+            {
+               "value":"accent-1",
+               "label":"t:sections.newsletter.settings.color_scheme.options__1.label"
+            },
+            {
+               "value":"accent-2",
+               "label":"t:sections.newsletter.settings.color_scheme.options__2.label"
+            },
+            {
+               "value":"background-1",
+               "label":"t:sections.newsletter.settings.color_scheme.options__3.label"
+            },
+            {
+               "value":"background-2",
+               "label":"t:sections.newsletter.settings.color_scheme.options__4.label"
+            },
+            {
+               "value":"inverse",
+               "label":"t:sections.newsletter.settings.color_scheme.options__5.label"
+            }
+         ],
+         "default":"background-1",
+         "label":"t:sections.newsletter.settings.color_scheme.label"
+        },
+        {
+            "type": "color",
+            "id": "text_color",
+            "label": "Couleur du texte",
+            "default": "#000"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "reassurance",
+            "name": "logo de reassurance",
+            "settings": [
+            {
+                "type": "select",
+                "id": "icon",
+                "label": "Icon",
+                "options": [
+                    {
+                        "value": "insurance-1",
+                        "label": "Paiement sécurisé"
+                    },
+                    {
+                        "value": "insurance-2",
+                        "label": "Satisfait ou remboursé"
+                    },
+                    {
+                        "value": "insurance-3",
+                        "label": "Paiement 3 fois"
+                    },
+                    {
+                        "value": "insurance-4",
+                        "label": "Livraison offerte"
+                    }
+                ],
+                "default": "insurance-1"
+            },
+            {
+                "id": "title",
+                "type": "text",
+                "label": "Titre"
+            },
+            {
+                "id": "subheading",
+                "type": "text",
+                "label": "Text"
+            },
+            {
+                "id": "url",
+                "type": "url",
+                "label": "Lien"
+            }
+        ]
+    }
+    ],
+    "presets": [
+        {
+            "name": "Reassurances",
+            "category": "Axome",
+            "blocks": [
+                {
+                    "type": "reassurance"
+                },
+                {
+                    "type": "reassurance"
+                },
+                {
+                    "type": "reassurance"
+                },
+                {
+                    "type": "reassurance"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

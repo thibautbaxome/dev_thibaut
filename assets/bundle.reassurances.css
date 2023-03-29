@@ -1,0 +1,60 @@
+/*!***********************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].use[3]!./_dev/styles/sections/reassurances.scss ***!
+  \***********************************************************************************************************************************************************************************************************************************/
+.reassurances {
+  padding: 60px 0 !important;
+}
+@media (min-width: 768px) {
+  .reassurances {
+    padding: 120px 0 !important;
+  }
+}
+.reassurances .reassurances-content .reassurance {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.reassurances .reassurances-content .reassurance svg {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 20px;
+}
+@media (min-width: 768px) {
+  .reassurances .reassurances-content .reassurance svg {
+    margin-bottom: 10px;
+  }
+}
+.reassurances .reassurances-content .reassurance .reassurance-title {
+  font-size: var(--font-body-scale);
+  font-weight: 700;
+  line-height: 20px;
+  margin-bottom: 6px;
+}
+@media (min-width: 768px) {
+  .reassurances .reassurances-content .reassurance .reassurance-title {
+    font-size: calc(var(--font-body-scale) * 125%);
+    line-height: 28px;
+    margin-bottom: 10px;
+  }
+}
+.reassurances .reassurances-content .reassurance .reassurance-subheading {
+  font-size: calc(var(--font-body-scale) * 87.5%);
+  font-weight: 300;
+  line-height: 20px;
+}
+@media (min-width: 768px) {
+  .reassurances .reassurances-content .swiper-button-next,
+  .reassurances .reassurances-content .swiper-button-prev {
+    display: none;
+  }
+}
+@media (max-width: 991.98px) {
+  .reassurances .reassurances-content.stack-mobile .swiper-wrapper {
+    flex-wrap: wrap;
+    transform: none;
+  }
+  .reassurances .reassurances-content.stack-mobile .swiper-wrapper .swiper-slide {
+    width: 50% !important;
+    margin: 20px 0;
+  }
+}
