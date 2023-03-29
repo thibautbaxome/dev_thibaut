@@ -1,0 +1,99 @@
+.page-width {
+	@include make-container();
+}
+
+.position {
+	@include media-breakpoint-up(md) {
+		&.top-left {
+			top: 0;
+			left: 0;
+		}
+
+		&.top-center {
+			top: 0;
+			left: 50%;
+			transform: translateX(-50%);
+			text-align: center;
+		}
+
+		&.top-right {
+			top: 0;
+			right: 0;
+			text-align: right;
+		}
+
+		&.middle-left {
+			top: 50%;
+			left: 0;
+			transform: translateY(-50%);
+		}
+
+		&.middle-center {
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			text-align: center;
+		}
+
+		&.middle-right {
+			top: 50%;
+			right: 0;
+			transform: translateY(-50%);
+			text-align: right;
+		}
+
+		&.bottom-left {
+			bottom: 0;
+			left: 0;
+		}
+
+		&.bottom-center {
+			bottom: 0;
+			left: 50%;
+			transform: translateX(-50%);
+			text-align: center;
+		}
+
+		&.bottom-right {
+			bottom: 0;
+			right: 0;
+			text-align: right;
+		}
+	}
+	@include media-breakpoint-down(sm) {
+		&.mobile-left {
+			left: 30px;
+			text-align: left;
+		}
+
+		&.mobile-center {
+			left: 50%;
+			transform: translateX(-50%);
+			text-align: center;
+		}
+
+		&.mobile-right {
+			right: 30px;
+			text-align: right;
+		}
+
+		&.mobile-top {
+			top: 30px;
+			left: 30px;
+			text-align: left;
+		}
+
+		&.mobile-left-center {
+			top: 50%;
+			left: 30px;
+			transform: translateY(-50%);
+			text-align: left;
+		}
+
+		&.mobile-bottom {
+			bottom: 30px;
+			left: 30px;
+			text-align: left;
+		}
+	}
+}

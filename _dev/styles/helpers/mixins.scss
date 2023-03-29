@@ -1,0 +1,112 @@
+@import './functions.scss';
+
+//Media query up
+@mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
+	$min: breakpoint-min($name, $breakpoints);
+	@if $min {
+		@media (min-width: $min) {
+			@content;
+		}
+	} @else {
+		@content;
+	}
+}
+
+//Media query down
+@mixin media-breakpoint-down($name, $breakpoints: $grid-breakpoints) {
+	$max: breakpoint-max($name, $breakpoints);
+	@if $max {
+		@media (max-width: $max) {
+			@content;
+		}
+	} @else {
+		@content;
+	}
+}
+
+//Media query only
+@mixin media-breakpoint-only($name, $breakpoints: $grid-breakpoints) {
+	$min: breakpoint-min($name, $breakpoints);
+	$max: breakpoint-max($name, $breakpoints);
+
+	@if $min != null and $max != null {
+		@media (min-width: $min) and (max-width: $max) {
+			@content;
+		}
+	} @else if $max == null {
+		@include media-breakpoint-up($name, $breakpoints) {
+			@content;
+		}
+	} @else if $min == null {
+		@include media-breakpoint-down($name, $breakpoints) {
+			@content;
+		}
+	}
+}
+
+//Only Firefox
+@mixin firefox-only {
+	@at-root {
+		@-moz-document url-prefix() {
+			& {
+				@content;
+			}
+		}
+	}
+}
+
+//Gutters
+@mixin padding-base($gutter: $grid-gutter-width) {
+	padding: 0 $gutter;
+	@include media-breakpoint-down(sm){
+		padding: 0 ($gutter / 2);
+	}
+}
+
+//Container
+@mixin make-container($gutter: $grid-container-width) {
+	padding-right: $gutter !important;
+	padding-left: $gutter !important;
+	@include media-breakpoint-down(sm){
+		padding-right: ($gutter / 2) !important;
+		padding-left: ($gutter / 2) !important;
+	}
+}
+
+//Btn
+@mixin btn-primary($color, $background, $border, $hover) {
+	$active-background: $hover;
+	$active-border: $hover;
+
+	color: $color;
+	background-color: $background;
+	border-color: $border;
+
+	&:hover,
+	&:active,
+	&:focus {
+		color: $background;
+		background-color: $active-background;
+		border-color: $background;
+	}
+}
+
+@mixin btn-secondary($color, $background, $border, $hover) {
+	color: $color;
+	background-color: $background;
+	border-color: $border;
+
+	&:hover {
+		color: $background;
+		background-color: $color;
+		border-color: $color;
+	}
+
+	&:active,
+	&:focus,
+	&.focus {
+		color: $background;
+		background-color: $color;
+		border-color: $color;
+	}
+}

@@ -1,0 +1,83 @@
+//Typography
+$font-body: var(--font-body-family);
+$font-heading: var(--font-heading-family);
+$font-custom: var(--font-custom-family);
+
+//Font Weight
+$weight-light: 300;
+$weight-normal: 400;
+$weight-medium: 500;
+$weight-semi-bold: 600;
+$weight-bold: 700;
+$weight-black: 900;
+
+//Line height
+$line-height-base: 1.5;
+
+//Letter spacing
+$letter-spacing: 1.6px;
+
+//Font Size
+$font-size-custom: var(--font-custom-scale);
+
+$font-size-extra-large: calc(var(--font-body-scale) * 125%); //20px
+$font-size-large: calc(var(--font-body-scale) * 112.5%); //18px
+$font-size-base: var(--font-body-scale); //16px
+$font-size-small: calc(var(--font-body-scale) * 87.5%); //14px
+$font-size-extra-small: calc(var(--font-body-scale) * 75%); //12px
+
+$font-size-h1: var(--font-heading-scale);
+$font-size-h2: calc(var(--font-heading-scale) * 87.5%);
+$font-size-h3: calc(var(--font-heading-scale) * 80%);
+$font-size-h4: calc(var(--font-heading-scale) * 75%);
+$font-size-h5: calc(var(--font-heading-scale) * 70%);
+$font-size-h6: calc(var(--font-heading-scale) * 62.5%);
+
+//Colors
+$gray-100: #f6f5f5;
+$gray-200: #dddddd;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #9C9996;
+$gray-600: #6c757d;
+$gray-700: #666666;
+$gray-800: #444444;
+$gray-900: #212529;
+
+$blue:    #007bff;
+$purple:  #6f42c1;
+$pink:    #e83e8c;
+$red:     #e92426;
+$orange:  #fd7e14;
+$yellow:  #ffc107;
+$green:   #28a745;
+
+$primary:        var(--color-primary);
+$secondary:      var(--color-secondary);
+$white:         #fff;
+$black:         #000;
+
+$border-color: $gray-600;
+
+//Components
+$primary-box-rgba:   rgba(var(--color-base-primary), var(--buttons-border-opacity));
+$secondary-box-rgba: rgba(var(--color-base-secondary), var(--buttons-border-opacity));
+$border-radius:    0;
+$transition-base:  all .2s ease-in-out;
+
+//Grid
+$grid-columns:         12;
+$grid-gutter-width:    20px;
+$grid-container-width: 60px;
+
+//Box Shadow
+$box-shadow: inset 0 1px 0 rgba($white, .15), 0 1px 1px rgba($black, .075);
+
+//Media queries
+$grid-breakpoints: (
+		xs: 0,
+		sm: 576px,
+		md: 768px,
+		lg: 992px,
+		xl: 1200px
+);
