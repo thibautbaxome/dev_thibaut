@@ -33,6 +33,7 @@
     "webpack-shell-plugin-next": "^2.3.1"
   },
   "dependencies": {
-    "reassurances": "git+ssh://git@github.com/Zerance131/sp-cli-component-reassurances.git"
+    "reassurances": "git+ssh://git@github.com/Zerance131/sp-cli-component-reassurances.git",
+    "slider": "git+ssh://git@github.com/Zerance131/sp-cli-component-slider.git"
   }
 }

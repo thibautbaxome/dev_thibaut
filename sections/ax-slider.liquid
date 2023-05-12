@@ -1,0 +1,649 @@
+{{ 'bundle.slider.css' | asset_url | stylesheet_tag }}
+
+<script>
+  window.assetsUrl.js.push({"slider": "{{ "bundle.slider.js" | asset_url }}"});
+</script>
+
+{% capture swiper-options %}
+    {
+    "slideInView": {% if section.settings.divide %}2{% else %}1{% endif %},
+    "slidesToMove": {% if section.settings.divide %}2{% else %}1{% endif %},
+    "loop": {% if section.settings.loop %}true{% else %}false{% endif %},
+    "autoplay": {% if section.settings.autoplay %}true{% else %}false{% endif %},
+    "speed": {{ section.settings.speed }},
+    "grabCursor": true,
+    "effect": "slide",
+    "freemode_mobile": false,
+    "random_slide": {{ section.settings.random }},
+    "slider_length": {{ section.blocks.size }}
+    }
+{% endcapture %}
+
+{% capture other_slides %}
+    {% for block in section.blocks offset: 1 %}
+        {% style %}
+            #Swiper-{{ section.id }} #Swiper-{{ section.id }}-{{ block.id }} .media.overlay::before {
+            background: rgba(0, 0, 0, {{ block.settings.overlay_opacity }});
+            }
+        {% endstyle %}
+
+        {%- liquid
+            assign display_slide = true
+
+            assign today_date = 'now' | date: '%d-%m-%Y'
+            assign begin_date = block.settings.begin_date
+            assign end_date = block.settings.end_date
+
+            if begin_date != blank and end_date != blank
+                if begin_date <= today_date and end_date > today_date
+                    assign display_slide = true
+                else
+                    assign display_slide = false
+                endif
+            endif
+
+            unless display_slide
+                continue
+            endunless
+
+            assign alt_img = block.settings.title
+            if block.settings.title == blank
+                assign alt_img = shop.name
+            endif
+        -%}
+
+        <div id="Swiper-{{ section.id }}-{{ block.id }}"
+        class="swiper-slide{% if section.settings.content_mobile %} mobile_content-outside{% endif %}">
+        {% if block.settings.hide_button and block.settings.url != blank %}<a href="{{ block.settings.url }}" class="swiper-link"{% if block.settings.link_blank %} target="_blank"{% endif %}>{% endif %}
+        <div class="media media--{{ section.settings.image_ratio }}{% if block.settings.overlay %} overlay{% endif %}"
+            {% if section.settings.image_ratio == 'adapted' %}style="padding-bottom: {{ 1 | divided_by: section.blocks[0].settings.img_slider.aspect_ratio | times: 100 }}%;"{% endif %}
+            {% if section.settings.image_ratio == 'fixed' %}style="height: {{ section.settings.fixed_height }}px;"{% endif %}>
+        {% if block.settings.img_slider %}
+            <picture>
+            {% if block.settings.img_slider_mobile %}
+                {%- if block.settings.img_slider_mobile.width >= 330 -%}
+                    <source media="(max-width: 330px)"
+                            srcset="{{ block.settings.img_slider_mobile | image_url: width: 330, format: 'pjpg' }}">{%- endif -%}
+                {%- if block.settings.img_slider_mobile.width >= 400 -%}
+                    <source media="(max-width: 400px)"
+                            srcset="{{ block.settings.img_slider_mobile | image_url: width: 400, format: 'pjpg' }}">{%- endif -%}
+                {%- if block.settings.img_slider_mobile.width >= 550 -%}
+                    <source media="(max-width: 550px)"
+                            srcset="{{ block.settings.img_slider_mobile | image_url: width: 550, format: 'pjpg' }}">{%- endif -%}
+            {% else %}
+                {%- if block.settings.img_slider.width >= 330 -%}
+                    <source media="(max-width: 330px)"
+                            srcset="{{ block.settings.img_slider | image_url: width: 330, format: 'pjpg' }}">{%- endif -%}
+                {%- if block.settings.img_slider.width >= 400 -%}
+                    <source media="(max-width: 400px)"
+                            srcset="{{ block.settings.img_slider | image_url: width: 400, format: 'pjpg' }}">{%- endif -%}
+                {%- if block.settings.img_slider.width >= 550 -%}
+                    <source media="(max-width: 550px)"
+                            srcset="{{ block.settings.img_slider | image_url: width: 550, format: 'pjpg' }}">{%- endif -%}
+            {% endif %}
+            {%- if block.settings.img_slider.width >= 768 -%}
+                <source media="(max-width: 768px)"
+                        srcset="{{ block.settings.img_slider | image_url: width: 768, format: 'pjpg' }}">{%- endif -%}
+            {%- if block.settings.img_slider.width >= 1280 -%}
+                <source media="(max-width: 1280px)"
+                        srcset="{{ block.settings.img_slider | image_url: width: 1280, format: 'pjpg' }}">{%- endif -%}
+            {%- if block.settings.img_slider.width >= 1366 -%}
+                <source media="(max-width: 1366px)"
+                        srcset="{{ block.settings.img_slider | image_url: width: 1366, format: 'pjpg' }}">{%- endif -%}
+            {%- if block.settings.img_slider.width >= 1440 -%}
+                <source media="(max-width: 1440px)"
+                        srcset="{{ block.settings.img_slider | image_url: width: 1440, format: 'pjpg' }}">{%- endif -%}
+            {%- if block.settings.img_slider.width >= 1600 -%}
+                <source media="(max-width: 1600px)"
+                        srcset="{{ block.settings.img_slider | image_url: width: 1600, format: 'pjpg' }}">{%- endif -%}
+            {%- if block.settings.img_slider.width >= 1920 -%}
+                <source media="(max-width: 1920px)"
+                        srcset="{{ block.settings.img_slider | image_url: width: 1920, format: 'pjpg' }}">{%- endif -%}
+            {%- if block.settings.img_slider.width >= 2300 -%}
+            <source media="(max-width: 2300px)"
+                    srcset="{{ block.settings.img_slider | image_url: width: 2300, format: 'pjpg' }}">{%- endif -%}
+        {%- if block.settings.img_slider.width >= 2560 -%}
+            <source media="(min-width: 2301px)"
+                    srcset="{{ block.settings.img_slider | image_url: width: 2560, format: 'pjpg' }}">{%- endif -%}
+        <img src="{{ block.settings.img_slider | image_url: width: block.settings.img_slider.width, format: 'pjpg' }}"
+             alt="{{ block.settings.img_slider.alt | escape | default: alt_img }}"
+             width="{{ block.settings.img_slider.width }}"
+             height="{{ block.settings.img_slider.width | divided_by: block.settings.img_slider.aspect_ratio | round }}"
+        >
+    {% else %}
+        {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+    {% endif %}
+    </picture>
+    </div>
+    <div class="slider-content position {{ block.settings.content_position }} {{ block.settings.mobile_position }}">
+        {% if block.settings.subheading != blank %}
+            <div class="content-subheading" style="color: {{ block.settings.subheading_color }}">
+                {{ block.settings.subheading | escape }}
+            </div>
+        {% endif %}
+        {% if block.settings.title != blank %}
+            <div class="content-title {{ block.settings.heading_size }}" style="color: {{ block.settings.title_color }}">
+                {{ block.settings.title | escape }}
+            </div>
+        {% endif %}
+        {% if block.settings.description != blank %}
+            <div class="content-description" style="color: {{ block.settings.description_color }}">
+                {{ block.settings.description | escape }}
+            </div>
+        {% endif %}
+        {% if block.settings.hide_button != true and block.settings.url != blank %}
+            <a href="{{ block.settings.url }}"{% if block.settings.link_blank %} target="_blank"{% endif %}{% unless block.settings.style_button == 'ax-link' %} class="{{ block.settings.style_button }}"{% endunless %}>
+                {%- if block.settings.style_button == 'ax-link' -%}
+                    <span class="{{ block.settings.style_button }}">
+                                {%- if block.settings.button_text != blank -%}{{- block.settings.button_text | escape -}}{%- else -%}{{- 'general.slider.button_text' | t -}}{%- endif -%}
+                            </span>
+                {%- else -%}
+                    {%- if block.settings.button_text != blank -%}{{- block.settings.button_text | escape -}}{%- else -%}{{- 'general.slider.button_text' | t -}}{%- endif -%}
+                {%- endif -%}
+            </a>
+        {% endif %}
+    </div>
+    {% if block.settings.hide_button and block.settings.url != blank %}</a>{% endif %}
+    </div>
+    <p>|</p>
+    {% endfor %}
+{% endcapture %}
+
+<div data-ax-section="slider">
+    <swiper-slider>
+        <div class="swiper" id="Swiper-{{ section.id }}" data-options='{{ swiper-options }}'
+             data-other-slides="{{ other_slides | strip | strip_newlines | split: '<p>|</p>' | json | base64_encode }}">
+            <div class="swiper-wrapper">
+                {%- for block in section.blocks -%}
+                    {% style %}
+                        #Swiper-{{ section.id }} .swiper-button-next svg *,
+                        #Swiper-{{ section.id }} .swiper-button-prev svg * {
+                        stroke: {{ block.settings.title_color }}
+                        }
+                        #Swiper-{{ section.id }} #Swiper-{{ section.id }}-{{ block.id }} .media.overlay::before {
+                        background: rgba(0, 0, 0, {{ block.settings.overlay_opacity }});
+                        }
+                    {% endstyle %}
+
+                    {%- liquid
+                        assign display_slide = true
+
+                        assign today_date = 'now' | date: '%d-%m-%Y'
+                        assign begin_date = block.settings.begin_date
+                        assign end_date = block.settings.end_date
+
+                        if begin_date != blank and end_date != blank
+                            if begin_date <= today_date and end_date > today_date
+                                assign display_slide = true
+                            else
+                                assign display_slide = false
+                            endif
+                        endif
+
+                        unless display_slide
+                            continue
+                        endunless
+
+                        assign alt_img = block.settings.title
+                        if block.settings.title == blank
+                            assign alt_img = shop.name
+                        endif
+                    -%}
+
+                    <div id="Swiper-{{ section.id }}-{{ block.id }}"
+                         class="swiper-slide{% if section.settings.content_mobile %} mobile_content-outside{% endif %}">
+                    {% if block.settings.hide_button and block.settings.url != blank %}<a
+                                href="{{ block.settings.url }}"
+                                class="swiper-link"{% if block.settings.link_blank %} target="_blank"{% endif %}>{% endif %}
+                            <div class="media media--{{ section.settings.image_ratio }}{% if block.settings.overlay %} overlay{% endif %}"
+                                 {% if section.settings.image_ratio == 'adapted' %}style="padding-bottom: {{ 1 | divided_by: section.blocks[0].settings.img_slider.aspect_ratio | times: 100 }}%;"{% endif %}
+                                {% if section.settings.image_ratio == 'fixed' %}style="height: {{ section.settings.fixed_height }}px;"{% endif %}>
+                                {% if block.settings.img_slider %}
+                                    <picture>
+                                        {% if block.settings.img_slider_mobile %}
+                                            {%- if block.settings.img_slider_mobile.width >= 330 -%}
+                                                <source media="(max-width: 330px)"
+                                                        srcset="{{ block.settings.img_slider_mobile | image_url: width: 330, format: 'pjpg' }}">{%- endif -%}
+                                            {%- if block.settings.img_slider_mobile.width >= 400 -%}
+                                                <source media="(max-width: 400px)"
+                                                        srcset="{{ block.settings.img_slider_mobile | image_url: width: 400, format: 'pjpg' }}">{%- endif -%}
+                                            {%- if block.settings.img_slider_mobile.width >= 550 -%}
+                                                <source media="(max-width: 550px)"
+                                                        srcset="{{ block.settings.img_slider_mobile | image_url: width: 550, format: 'pjpg' }}">{%- endif -%}
+                                        {% else %}
+                                            {%- if block.settings.img_slider.width >= 330 -%}
+                                                <source media="(max-width: 330px)"
+                                                        srcset="{{ block.settings.img_slider | image_url: width: 330, format: 'pjpg' }}">{%- endif -%}
+                                            {%- if block.settings.img_slider.width >= 400 -%}
+                                                <source media="(max-width: 400px)"
+                                                        srcset="{{ block.settings.img_slider | image_url: width: 400, format: 'pjpg' }}">{%- endif -%}
+                                            {%- if block.settings.img_slider.width >= 550 -%}
+                                                <source media="(max-width: 550px)"
+                                                        srcset="{{ block.settings.img_slider | image_url: width: 550, format: 'pjpg' }}">{%- endif -%}
+                                        {% endif %}
+                                        {%- if block.settings.img_slider.width >= 768 -%}
+                                            <source media="(max-width: 768px)"
+                                                    srcset="{{ block.settings.img_slider | image_url: width: 768, format: 'pjpg' }}">{%- endif -%}
+                                        {%- if block.settings.img_slider.width >= 1280 -%}
+                                            <source media="(max-width: 1280px)"
+                                                    srcset="{{ block.settings.img_slider | image_url: width: 1280, format: 'pjpg' }}">{%- endif -%}
+                                        {%- if block.settings.img_slider.width >= 1366 -%}
+                                            <source media="(max-width: 1366px)"
+                                                    srcset="{{ block.settings.img_slider | image_url: width: 1366, format: 'pjpg' }}">{%- endif -%}
+                                        {%- if block.settings.img_slider.width >= 1440 -%}
+                                            <source media="(max-width: 1440px)"
+                                                    srcset="{{ block.settings.img_slider | image_url: width: 1440, format: 'pjpg' }}">{%- endif -%}
+                                        {%- if block.settings.img_slider.width >= 1600 -%}
+                                            <source media="(max-width: 1600px)"
+                                                    srcset="{{ block.settings.img_slider | image_url: width: 1600, format: 'pjpg' }}">{%- endif -%}
+                                        {%- if block.settings.img_slider.width >= 1920 -%}
+                                            <source media="(max-width: 1920px)"
+                                                    srcset="{{ block.settings.img_slider | image_url: width: 1920, format: 'pjpg' }}">{%- endif -%}
+                                        {%- if block.settings.img_slider.width >= 2300 -%}
+                                            <source media="(max-width: 2300px)"
+                                                    srcset="{{ block.settings.img_slider | image_url: width: 2300, format: 'pjpg' }}">{%- endif -%}
+                                        {%- if block.settings.img_slider.width >= 2560 -%}
+                                            <source media="(min-width: 2301px)"
+                                                    srcset="{{ block.settings.img_slider | image_url: width: 2560, format: 'pjpg' }}">{%- endif -%}
+                                        <img src="{{ block.settings.img_slider | image_url: width: block.settings.img_slider.width, format: 'pjpg' }}"
+                                             alt="{{ block.settings.img_slider.alt | escape | default: alt_img }}"
+                                             width="{{ block.settings.img_slider.width }}"
+                                             height="{{ block.settings.img_slider.width | divided_by: block.settings.img_slider.aspect_ratio | round }}"
+                                             style="object-fit: cover"
+                                        >
+                                    </picture>
+                                {% else %}
+                                    {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                                {% endif %}
+                            </div>
+                            <div class="slider-content position {{ block.settings.content_position }} {{ block.settings.mobile_position }}">
+                                {% if block.settings.subheading != blank %}
+                                    <div class="content-subheading"
+                                         style="color: {{ block.settings.subheading_color }}">
+                                        {{ block.settings.subheading | escape }}
+                                    </div>
+                                {% endif %}
+                                {% if block.settings.title != blank %}
+                                    <div class="content-title {{ block.settings.heading_size }}"
+                                         style="color: {{ block.settings.title_color }}">
+                                        {{ block.settings.title | escape }}
+                                    </div>
+                                {% endif %}
+                                {% if block.settings.description != blank %}
+                                    <div class="content-description"
+                                         style="color: {{ block.settings.description_color }}">
+                                        {{ block.settings.description | escape }}
+                                    </div>
+                                {% endif %}
+                                {% if block.settings.hide_button != true and block.settings.url != blank %}
+                                    <a href="{{ block.settings.url }}"{% if block.settings.link_blank %} target="_blank"{% endif %}{% unless block.settings.style_button == 'ax-link' %} class="{{ block.settings.style_button }}"{% endunless %}>
+                                        {%- if block.settings.style_button == 'ax-link' -%}
+                                            <span class="{{ block.settings.style_button }}">
+                                            {%- if block.settings.button_text != blank -%}{{- block.settings.button_text | escape -}}{%- else -%}{{- 'general.slider.button_text' | t -}}{%- endif -%}
+                                        </span>
+                                        {%- else -%}
+                                            {%- if block.settings.button_text != blank -%}{{- block.settings.button_text | escape -}}{%- else -%}{{- 'general.slider.button_text' | t -}}{%- endif -%}
+                                        {%- endif -%}
+                                    </a>
+                                {% endif %}
+                            </div>
+                            {% if block.settings.hide_button and block.settings.url != blank %}</a>{% endif %}
+                    </div>
+                    {% break %}
+                {% endfor %}
+            </div>
+            {% if section.settings.buttons %}
+                <div class="swiper-button-next">{% render 'icons', icon: 'arrow-right' %}</div>
+                <div class="swiper-button-prev">{% render 'icons', icon: 'arrow-left' %}</div>
+            {% endif %}
+
+            {% if section.settings.pagination %}
+                <div class="swiper-pagination"></div>
+            {% endif %}
+        </div>
+    </swiper-slider>
+</div>
+
+{% schema %}
+{
+  "name": "Ax Slider",
+  "tag": "section",
+  "class": "section ax-section slider",
+  "max_blocks": 16,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Paramètres globaux"
+    },
+    {
+      "type": "header",
+      "content": "Paramètres du slider"
+    },
+    {
+      "type": "checkbox",
+      "id": "divide",
+      "label": "Diviser le slider",
+      "default": false,
+      "info": "1250 x 1171.88px recommended"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Vitesse de transition",
+      "default": 300,
+      "step": 100,
+      "min": 100,
+      "max": 3000
+    },
+    {
+      "type": "checkbox",
+      "id": "random",
+      "label": "Slide aléatoire",
+      "default": false,
+      "info": "Slider infini doit être activé"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Slider infini",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "buttons",
+      "label": "Afficher les boutons",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "pagination",
+      "label": "Afficher la pagination",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapted",
+          "label": "Adapté à la taille de la première image"
+        },
+        {
+          "value": "fixed",
+          "label": "Taille fixe"
+        },
+        {
+          "value": "display",
+          "label": "Adapté à la taille de l'ecran"
+        }
+      ],
+      "default": "adapted",
+      "label": "Taille du slider"
+    },
+    {
+      "type": "range",
+      "id": "fixed_height",
+      "label": "Hauteur fixe",
+      "default": 600,
+      "step": 50,
+      "min": 300,
+      "max": 900
+    },
+    {
+      "type": "header",
+      "content": "Options mobile"
+    },
+    {
+      "type": "checkbox",
+      "id": "content_mobile",
+      "label": "Contenu hors de l'image",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "label": "Image",
+          "id": "img_slider",
+          "info": "2500 x 1171.88px recommended"
+        },
+        {
+          "type": "image_picker",
+          "label": "Image mobile",
+          "id": "img_slider_mobile",
+          "info": "800 x 1079.47px recommended"
+        },
+        {
+          "type": "text",
+          "label": "Subheading",
+          "id": "subheading"
+        },
+        {
+          "type": "text",
+          "label": "Titre",
+          "id": "title"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "h2",
+              "label": "t:sections.all.heading_size.options__1.label"
+            },
+            {
+              "value": "h1",
+              "label": "t:sections.all.heading_size.options__2.label"
+            },
+            {
+              "value": "h0",
+              "label": "t:sections.all.heading_size.options__3.label"
+            }
+          ],
+          "default": "h1",
+          "label": "t:sections.all.heading_size.label"
+        },
+        {
+          "type": "textarea",
+          "label": "Description",
+          "id": "description"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_button",
+          "label": "Cacher le bouton",
+          "default": false
+        },
+        {
+          "type": "text",
+          "label": "Bouton",
+          "id": "button_text"
+        },
+        {
+          "type": "url",
+          "label": "Lien",
+          "id": "url"
+        },
+        {
+          "type": "checkbox",
+          "id": "link_blank",
+          "label": "Lien _blank",
+          "info": "Ouvrir ce lien dans une nouvelle fenêtre",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "style_button",
+          "options": [
+            {
+              "value": "btn btn-primary",
+              "label": "Primary"
+            },
+            {
+              "value": "btn btn-secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "btn btn-tertiary",
+              "label": "Tertiary"
+            },
+            {
+              "value": "ax-link",
+              "label": "Link"
+            },
+            {
+              "value": "underlined-link",
+              "label": "Underline link"
+            }
+          ],
+          "default": "btn btn-primary",
+          "label": "Combinaison de design"
+        },
+        {
+          "type": "select",
+          "id": "content_position",
+          "options": [
+            {
+                "value": "top-left",
+                "label": "En haut à gauche"
+            },
+            {
+                "value": "top-center",
+                "label": "En haut au centre"
+            },
+            {
+                "value": "top-right",
+                "label": "En haut à droite"
+            },
+            {
+              "value": "middle-left",
+              "label": "A gauche au centre"
+            },
+            {
+              "value": "middle-center",
+              "label": "Au centre"
+            },
+            {
+              "value": "middle-right",
+              "label": "A droite au centre"
+            },
+            {
+              "value": "bottom-left",
+              "label": "En bas à gauche"
+            },
+            {
+              "value": "bottom-center",
+              "label": "En bas au centre"
+            },
+            {
+              "value": "bottom-right",
+              "label": "En bas à droite"
+            }
+          ],
+          "default": "middle-left",
+          "label": "Position du contenu"
+        },
+        {
+          "type": "select",
+          "id": "mobile_position",
+          "options": [
+            {
+              "value": "mobile-left",
+              "label": "Gauche"
+            },
+            {
+              "value": "mobile-center",
+              "label": "Centre"
+            },
+            {
+              "value": "mobile-right",
+              "label": "Droite"
+            }
+          ],
+          "default": "mobile-left",
+          "label": "Position du texte en mobile"
+        },
+        {
+          "type": "header",
+          "content": "Slide programmable"
+        },
+        {
+          "type": "text",
+          "label": "Date de début",
+          "id": "begin_date",
+          "info": "Le champ doit etre strictement rempli de la manière suivant : 'DD-MM-YYYY'"
+        },
+        {
+          "type": "text",
+          "label": "Date de fin",
+          "id": "end_date",
+          "info": "Le champ doit etre strictement rempli de la manière suivant : 'DD-MM-YYYY'"
+        },
+        {
+          "type": "header",
+          "content": "Overlay"
+        },
+        {
+          "type": "checkbox",
+          "id": "overlay",
+          "label": "Ajouter un overlay",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "min": 0,
+          "max": 1,
+          "step": 0.1,
+          "label": "Image overlay opacity",
+          "info": "Increase contrast for legible text.",
+          "default": 0.2
+        },
+        {
+          "type": "header",
+          "content": "Couleurs"
+        },
+        {
+          "type": "color",
+          "label": "Couleur subheading",
+          "id": "subheading_color",
+          "default": "#FFF"
+        },
+        {
+          "type": "color",
+          "label": "Couleur titre",
+          "id": "title_color",
+          "default": "#FFF"
+        },
+        {
+          "type": "color",
+          "label": "Couleur description",
+          "id": "description_color",
+          "default": "#FFF"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ax Slider",
+      "category": "Axome",
+      "blocks": [
+        {
+          "type": "slide"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
