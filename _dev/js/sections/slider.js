@@ -1,23 +1,6 @@
 import "Styles/sections/slider.scss";
 import AxSwiper from "../components/swiper-element";
 
-//Calcul hauteur de l'image si option "adapté à la taille de l'écran"
-let sectionSlider = document.querySelector('[data-ax-section="slider"]');
-
-const calcFullHeight = () => {
-    let img = sectionSlider.querySelectorAll('.swiper-slide:not(.mobile_content-outside) .media--display'),
-        headerHeight = document.getElementById('shopify-section-header').offsetHeight,
-        announcementBarHeight = document.getElementById('shopify-section-announcement-bar').offsetHeight,
-        heightToRemove = headerHeight + announcementBarHeight + 'px';
-    img.forEach(image => {
-        image.style.height = `calc(100vh - ${heightToRemove})`;
-    })
-}
-
-if (sectionSlider.querySelectorAll('.media--display') !== undefined) {
-    calcFullHeight();
-}
-
 //Override Swiper
 class AxSlider extends AxSwiper {
     constructor() {
@@ -26,6 +9,7 @@ class AxSlider extends AxSwiper {
 
     init () {
         let firstSlide = this.config.random_slide && this.config.loop ? Math.floor(Math.random() * this.config.slider_length) : 0;
+        let needLazyLoad = true;
 
         this.swiperInstance = new window.Swiper(this.slider, {
             loop: this.config.loop,
@@ -48,15 +32,22 @@ class AxSlider extends AxSwiper {
                     grabCursor: this.config.grabCursor,
                     freeMode: false,
                 }
-            }
-        });
+            },
+            on: {
+                afterInit: function (swiper) {
+                    const addSlides = () => {
+                        needLazyLoad = false;
+                        let otherSlides = JSON.parse(decodeURIComponent(escape(window.atob(swiper.el.dataset.otherSlides))));
+                        swiper.appendSlide(otherSlides);
+                        swiper.el.removeAttribute('data-other-slides');
+                    }
 
-        //LazyLoad
-        this.swiperInstance.el.addEventListener('mouseenter', () => {
-            let otherSlides = JSON.parse(decodeURIComponent(escape(window.atob(this.swiperInstance.el.dataset.otherSlides))));
-            this.swiperInstance.appendSlide(otherSlides);
-            this.swiperInstance.el.removeAttribute('data-other-slides');
-        }, { once: true });
+                    ['ontouchstart', 'click', 'mousemove'].forEach(function (evt) {
+                        window.addEventListener(evt, function () {needLazyLoad === true && addSlides()});
+                    })
+                }
+            }
+        })
     }
 }
 

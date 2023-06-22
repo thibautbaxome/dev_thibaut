@@ -26,6 +26,10 @@
 					}
 				}
 
+				&.media--display {
+					height: calc(100vh - var(--header-height) - var(--announcement-height));
+				}
+
 				&.overlay {
 					&::before {
 						content: '';
