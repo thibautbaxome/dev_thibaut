@@ -1,0 +1,10 @@
+{
+	"name": "axome",
+	"version": "1.0.0",
+	"scripts": {
+		"pull": "shopify theme pull -s dev-t-bourbiflux",
+		"push": "shopify theme push -s dev-t-bourbiflux",
+		"serve": "shopify theme dev -s dev-t-bourbiflux"
+	},
+	"author": "Axome"
+}
