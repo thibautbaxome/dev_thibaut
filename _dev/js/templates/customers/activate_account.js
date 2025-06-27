@@ -1,1 +1,0 @@
-import "Styles/templates/customers/activate_account.scss";
